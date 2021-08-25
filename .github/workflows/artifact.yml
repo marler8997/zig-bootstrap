@@ -9,19 +9,24 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Clang
-        uses: egor-tensin/setup-clang@v1
-        with:
-          version: 12
-          platform: x64
+      #- name: Set up Clang
+      #  uses: egor-tensin/setup-clang@v1
+      #  with:
+      #    version: 12
+      #    platform: x64
       - name: Read zig version
         run: echo "ZIG_VERSION=$(cat zig-version)" >> $GITHUB_ENV
       - run: |
-          ./build -j$(nproc) x86_64-windows-gnu baseline
+          #./build -j$(nproc) x86_64-windows-gnu baseline
+          mkdir -p out/zig-x86_64-windows-gnu-baseline/bin
+          mkdir -p out/x86_64-windows-gnu-baseline/lib
+          touch out/zig-x86_64-windows-gnu-baseline/bin/zig.exe
+          touch out/zig-x86_64-windows-gnu-baseline/bin/lld.exe
+          touch out/x86_64-windows-gnu-baseline/lib/libX.a
           ./package
         shell: bash
       - uses: actions/upload-artifact@v2
         with:
           name: zig+llvm+lld+clang-x86_64-windows-gnu-${{ env.ZIG_VERSION }}
-          path: out/windows-devkit
+          path: out/windows-devkit/zig+llvm+lld+clang-x86_64-windows-gnu-${{ env.ZIG_VERSION }}.zip
           if-no-files-found: error

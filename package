@@ -27,5 +27,8 @@ done
 echo "removing ld exes..."
 rm "$devkit/bin/"*ld*.exe
 
+echo "zipping devkit..."
+zip -q -r "$devkit.zip" "$devkit"
+
 echo "success, devkit located at:"
-echo "$devkit"
+echo "$devkit.zip"
